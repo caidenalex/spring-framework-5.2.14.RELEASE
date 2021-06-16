@@ -57,21 +57,37 @@ final class PostProcessorRegistrationDelegate {
 			ConfigurableListableBeanFactory beanFactory, List<BeanFactoryPostProcessor> beanFactoryPostProcessors) {
 
 		// Invoke BeanDefinitionRegistryPostProcessors first, if any.
+		//无论什么情况，优先执行BeanDefinitionRegistryPostProcessors
+		//将已经执行过的bfpp存储在processedbeans中，防止重复执行
 		Set<String> processedBeans = new HashSet<>();
 
+		//判断beanfactory 是否是BeanDefinitionRegistry 类型,
+		// 此处是DefaultListableBeanFactory，实现了BeanDefinitionRegistry 接口，所以为true
 		if (beanFactory instanceof BeanDefinitionRegistry) {
+			//类型转换
 			BeanDefinitionRegistry registry = (BeanDefinitionRegistry) beanFactory;
+            //BeanDefinitionRegistryPostProcessor 是 BeanFactoryPostProcessor 的 子集
+			//BeanFactoryPostProcessor 主要针对的是 BeanFactory
+			//BeanDefinitionRegistryPostProcessor 主要操作的是 BeanDefinition
+			//存放 BeanFactoryPostProcessor 的 集合
 			List<BeanFactoryPostProcessor> regularPostProcessors = new ArrayList<>();
+			//存放 BeanDefinitionRegistryPostProcessor 的集合
 			List<BeanDefinitionRegistryPostProcessor> registryProcessors = new ArrayList<>();
 
+			//首先处理入参中的 BeanFactoryPostProcessor 遍历所有的 BeanFactoryPostProcessor
+			//将 BeanFactoryPostProcessor 和 BeanDefinitionRegistryPostProcessor 区分开
 			for (BeanFactoryPostProcessor postProcessor : beanFactoryPostProcessors) {
+
 				if (postProcessor instanceof BeanDefinitionRegistryPostProcessor) {
 					BeanDefinitionRegistryPostProcessor registryProcessor =
 							(BeanDefinitionRegistryPostProcessor) postProcessor;
+					//直接执行 postProcessBeanDefinitionRegistry 方法
 					registryProcessor.postProcessBeanDefinitionRegistry(registry);
+					//添加到registryProcessors 用于后续执行 postProcessBeanFactory() 方法
 					registryProcessors.add(registryProcessor);
 				}
 				else {
+					//知识普通的 BeanFactoryPostProcessor 添加到 regularPostProcessors 用于后续执行 postProcessBeanFactory() 方法
 					regularPostProcessors.add(postProcessor);
 				}
 			}
@@ -80,6 +96,7 @@ final class PostProcessorRegistrationDelegate {
 			// uninitialized to let the bean factory post-processors apply to them!
 			// Separate between BeanDefinitionRegistryPostProcessors that implement
 			// PriorityOrdered, Ordered, and the rest.
+			//用于保存本地要执行的BeanDefinitionRegistryPostProcessor
 			List<BeanDefinitionRegistryPostProcessor> currentRegistryProcessors = new ArrayList<>();
 
 			// First, invoke the BeanDefinitionRegistryPostProcessors that implement PriorityOrdered.

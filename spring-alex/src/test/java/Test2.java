@@ -19,6 +19,7 @@ public class Test2 {
 		ApplicationContext applicationContext =
 				new ClassPathXmlApplicationContext("ApplicationContext.xml");
 
+
 		Student student = (Student) applicationContext.getBean("student");
 		System.out.println(student.toString());
 

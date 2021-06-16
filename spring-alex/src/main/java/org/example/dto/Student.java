@@ -1,9 +1,15 @@
 package org.example.dto;
 
-public class Student {
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+
+public class Student implements ApplicationContextAware {
 
 	private String username;
 	private String password;
+
+	private ApplicationContext applicationContext;
 
 	public String getUsername() {
 		return username;
@@ -28,4 +34,16 @@ public class Student {
 				", password='" + password + '\'' +
 				'}';
 	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+			this.applicationContext = applicationContext;
+	}
+
+	public ApplicationContext getApplicationContext() {
+		return applicationContext;
+	}
+
+
+
 }

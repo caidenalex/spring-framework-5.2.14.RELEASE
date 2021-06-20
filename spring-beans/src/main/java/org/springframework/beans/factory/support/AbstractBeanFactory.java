@@ -251,8 +251,10 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		// Eagerly check singleton cache for manually registered singletons.
 		// 提前检查单例缓存是否有手动注册的单例。 跟循环依赖关联
 		Object sharedInstance = getSingleton(beanName);
+		System.out.println("获取单例bean:"+beanName+"*****"+sharedInstance);
 		// 找到单例对象， 没有 创建bean实例 时，需要的参数
 		if (sharedInstance != null && args == null) {
+			System.out.println("获取缓存对象"+ beanName+ "****"+sharedInstance.toString());
 			if (logger.isTraceEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
 					logger.trace("Returning eagerly cached instance of singleton bean '" + beanName +
@@ -343,6 +345,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					sharedInstance = getSingleton(beanName, () -> {
 						try {
 							// 为给定合并后的beandefition (和参数) 创建一个bean实例
+
 							return createBean(beanName, mbd, args);
 						}
 						catch (BeansException ex) {
@@ -358,6 +361,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 							throw ex;
 						}
 					});
+					System.out.println("获取bean成功："+beanName);
 					bean = getObjectForBeanInstance(sharedInstance, name, beanName, mbd);
 				}
 

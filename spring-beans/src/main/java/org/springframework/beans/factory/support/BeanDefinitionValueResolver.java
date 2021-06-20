@@ -108,8 +108,12 @@ class BeanDefinitionValueResolver {
 	public Object resolveValueIfNecessary(Object argName, @Nullable Object value) {
 		// We must check each value to see whether it requires a runtime reference
 		// to another bean to be resolved.
+		//我们必须检查每个值以查看它是否需要运行时引用到另一个要解析的bean
+
+		//RuntimeBeanReference：当属性值的对象是另一个bean的引用时，使不可变的占位符在运行时进行解析
 		if (value instanceof RuntimeBeanReference) {
 			RuntimeBeanReference ref = (RuntimeBeanReference) value;
+			//解析出对应ref封装的bean的元信息的bean对象
 			return resolveReference(argName, ref);
 		}
 		else if (value instanceof RuntimeBeanNameReference) {

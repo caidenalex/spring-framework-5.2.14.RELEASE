@@ -904,6 +904,7 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 					}
 				}
 				else {
+					System.out.println("获取bean对象: "+beanName);
 					getBean(beanName);
 				}
 			}

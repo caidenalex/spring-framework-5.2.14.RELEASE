@@ -3,10 +3,18 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bean="http://www.springframework.org/schema/context"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
 
-	   <bean  id="student" class="org.example.dto.Student">
+<!--	   <bean  id="student" class="org.example.dto.Student">
 		   <property name="username" value="wangxiao"></property>
 		   <property name="password" value="1345555"></property>
-	   </bean>
+	   </bean>-->
+
+	<bean id="a" class="org.example.dto.A">
+		<property name="b" ref="b"></property>
+	</bean>
+
+	<bean id="b" class="org.example.dto.B">
+		<property name="a" ref="a"></property>
+	</bean>
 
 	  <!-- <bean:component-scan base-package="org.example"></bean:component-scan>-->
 </beans>
